@@ -1,0 +1,65 @@
+@charset "ISO-8859-1";
+
+* {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	list-style-type: none;
+}
+
+.h-80 {
+	height: 80%;
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+	background-color: #F9F9F9;
+	font-family: 'Noto Serif';
+}
+
+.error-msgs {
+	color: red;
+	font-size: 12px;
+}
+
+header {
+	padding: 2%;
+	letter-spacing: 0.01em;
+	box-shadow: 10px 10px 20px 20px #F6CD95;
+	display: flex;
+	color: #78F169 !important;
+}
+
+header>div {
+	flex: 1;
+}
+
+header>ul {
+	flex: 1;
+}
+
+header>div>h1 {
+	text-shadow: 2px 2px 2px #F6CD95;
+}
+
+header>ul {
+	display: flex;
+	justify-content: flex-end;
+	padding-top: 2%;
+	font-size: 20px;
+}
+
+header>ul>li>a {
+	font-family: 'Karla' !important;
+	font-weight: 700px !important;
+	color: #78F169 !important;
+}
+
+section#login {
+	
+}
+
+section#login>form>div>label, section#register>form>div>label {
+	font-size: 20px;
+}

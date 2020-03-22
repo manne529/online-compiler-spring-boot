@@ -13,11 +13,13 @@ import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class User {
 
 	@Id
@@ -35,14 +37,15 @@ public class User {
 	@Pattern(regexp = "[6-9][0-9]{9}", message = "Enter a valid mobile number")
 	private String mobile;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = false)
 	@Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$", message = "Min 8 characters, min 1 small alphabet, min 1 captical alphabet, min 1 numeric, min 1 special character")
 	private String password;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = false)
 	@Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$", message = "Min 8 characters, min 1 small alphabet, min 1 captical alphabet, min 1 numeric, min 1 special character")
 	@Transient
 	private String confirmPassword;
+
 	@Enumerated(EnumType.STRING)
 	private Role role;
 

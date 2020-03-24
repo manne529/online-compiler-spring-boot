@@ -22,7 +22,8 @@
 		<section class='col-sm-8'></section>
 		<section id="login" class='col-sm-4 align-self-center'>
 
-			<form class='form col-sm-8 offset-sm-2'>
+			<form class='form col-sm-8 offset-sm-2' action="${contextPath}/login"
+				method="post">
 				<div class='d-flex justify-content-center'>
 					<h1>Login</h1>
 				</div>

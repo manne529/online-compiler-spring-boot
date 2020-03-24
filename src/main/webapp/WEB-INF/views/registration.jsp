@@ -23,8 +23,9 @@
 		<section id="register" class='col-sm-4 align-self-center'>
 
 
-			<spring:form action="${contextPath}/register" method="post"
-				modelAttribute="user" class='col-sm-8 offset-sm-2'>
+			<spring:form name='regform' action="${contextPath}/register"
+				method="post" modelAttribute="user" class='col-sm-8 offset-sm-2'
+				onsubmit="regFormSubmission()">
 
 
 				<div class='d-flex flex-row justify-content-center'>
@@ -60,16 +61,17 @@
 				<div class='form-group'>
 					<label for='username'>Username</label> <input type='text'
 						name='username' class='form-control' />
+					<spring:errors path="username" class="error-msgs"></spring:errors>
 				</div>
 				<div class='form-group'>
 					<label for='role'>As a</label>
 					<div class="d-flex justify-content-around">
 						<div>
-							<spring:radiobutton path="role" value="STUDENT" />
+							<spring:radiobutton path="role" name="role" value="STUDENT" />
 							<label for='student'>Student</label>
 						</div>
 						<div>
-							<spring:radiobutton path="role" value="TRAINER" />
+							<spring:radiobutton path="role" name="role" value="TRAINER" />
 							<label for='trainer'>Trainer</label>
 						</div>
 					</div>
@@ -91,7 +93,10 @@
 						name='confirmPassword' class='form-control' />
 					<spring:errors path="confirmPassword" class='error-msgs'></spring:errors>
 				</div>
-
+				<div>
+					<spring:input type="hidden" path="enabled" name="enabled"
+						value="true" />
+				</div>
 				<div class='d-flex justify-content-center'>
 					<input type="submit" class="btn btn-primary" />
 				</div>

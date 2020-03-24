@@ -12,7 +12,6 @@ public class UserTestUtility {
 		user.setMobile("9090909090");
 		user.setPassword("P@ssw0rd#123");
 		user.setConfirmPassword("P@ssw0rd#123");
-		user.setRole(Role.STUDENT);
 		return user;
 	}
 
@@ -24,7 +23,6 @@ public class UserTestUtility {
 		newUser.setMobile(user.getMobile());
 		newUser.setPassword(user.getPassword());
 		newUser.setConfirmPassword(user.getPassword());
-		newUser.setRole(user.getRole());
 		return newUser;
 	}
 
@@ -35,7 +33,6 @@ public class UserTestUtility {
 		user.setMobile("8089089089");
 		user.setPassword("P@ssw0rd#123");
 		user.setConfirmPassword("P@ssw0rd#123");
-		user.setRole(Role.STUDENT);
 		return user;
 	}
 

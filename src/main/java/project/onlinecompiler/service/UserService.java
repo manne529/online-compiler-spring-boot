@@ -40,6 +40,15 @@ public class UserService {
 		}
 	}
 
+	public User getUser(String username) {
+		try {
+			return userRepository.findByUsername(username);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public void deleteAll() {
 		try {
 			userRepository.deleteAll();

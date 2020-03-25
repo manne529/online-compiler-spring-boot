@@ -67,11 +67,11 @@
 					<label for='role'>As a</label>
 					<div class="d-flex justify-content-around">
 						<div>
-							<spring:radiobutton path="role" name="role" value="STUDENT" />
+							<spring:radiobutton path="role" name="role" value="ROLE_STUDENT" />
 							<label for='student'>Student</label>
 						</div>
 						<div>
-							<spring:radiobutton path="role" name="role" value="TRAINER" />
+							<spring:radiobutton path="role" name="role" value="ROLE_TRAINER" />
 							<label for='trainer'>Trainer</label>
 						</div>
 					</div>

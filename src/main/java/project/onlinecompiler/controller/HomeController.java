@@ -1,5 +1,7 @@
 package project.onlinecompiler.controller;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,7 +20,8 @@ public class HomeController {
 	}
 
 	@GetMapping(value = { "/", "/index", "/login" })
-	public String index() {
+	public String index(Principal principal) {
+		System.out.println(principal);
 		return "index";
 	}
 

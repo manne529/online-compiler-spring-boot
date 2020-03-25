@@ -1,11 +1,15 @@
 package project.onlinecompiler.controller;
 
+import java.security.Principal;
+
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -34,6 +38,21 @@ public class UserController {
 			} else {
 				return "registration";
 			}
+		}
+	}
+
+	@GetMapping("/homepage")
+	public String homepage(Principal principal, HttpSession session) {
+		if (principal != null) {
+			User user = userService.getUser(principal.getName());
+			session.setAttribute("user", user);
+			if (user.getRole().equals("ROLE_TRAINER")) {
+				return "redirect:/trainer/home";
+			} else {
+				return "redirect:/std/home";
+			}
+		} else {
+			return "redirect:/";
 		}
 	}
 

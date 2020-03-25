@@ -1,6 +1,7 @@
 package project.onlinecompiler.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,6 +20,9 @@ import project.onlinecompiler.dto.User;
 import project.onlinecompiler.exceptions.ClassKeyWordMissingException;
 import project.onlinecompiler.io.FileOperations;
 import project.onlinecompiler.service.QuestionService;
+import project.onlinecompiler.util.Compiler;
+import project.onlinecompiler.util.SourceCodeParser;
+import project.onlinecompiler.util.TestCaseCompiler;
 
 @Controller
 public class QuestionController {
@@ -26,18 +30,31 @@ public class QuestionController {
 	@Autowired
 	private QuestionService questionService;
 
-	@Value("${filedirectories.location.testcasefile}")
-	private String testCaseDirectoryLocation;
+	@Value("${filedirectories.questions.location}")
+	private String questionLocation;
 
 	@GetMapping("/trainer/question")
 	public String questionPage(@RequestParam(required = false, name = "addStatus") String addStatus,
-			@RequestParam(required = false, name = "badFile") String badFile, Model model) {
+			@RequestParam(required = false, name = "badFile") String badFile,
+			@RequestParam(required = false, name = "testCompile") String testCompile,
+			@RequestParam(required = false, value = "boilerplateCompile") String boilerplateCompile, Model model) {
+
 		if (!Boolean.valueOf(addStatus)) {
 			model.addAttribute("errorMessage", "Some internalError Occured. Try again...!");
 		}
 
 		if (Boolean.valueOf(badFile)) {
 			model.addAttribute("errorMessage", "Test Case file is added, due to improper java file");
+		}
+
+		if (!Boolean.valueOf(boilerplateCompile)) {
+			model.addAttribute("errorMessage",
+					"Boilerplate compilation Failed. Insert succesfully compiled Source code");
+		}
+
+		if (!Boolean.valueOf(testCompile)) {
+			model.addAttribute("errorMessage",
+					"Test cases compilation Failed. Insert succesfully compiled Source code");
 		}
 
 		model.addAttribute("question", new Question());
@@ -79,10 +96,47 @@ public class QuestionController {
 			if (questionService.save(question) != null) {
 
 				if (question.getIsTestCasesAvailable()) {
-					FileOperations fileOperations = new FileOperations(question.getTestCasesFile().getInputStream(),
-							testCaseDirectoryLocation, String.valueOf(question.getId()), ".java");
-					fileOperations.save();
-					fileOperations.renameWithClassName();
+					InputStream inputStream = question.getTestCasesFile().getInputStream();
+					byte[] fileBytes = new byte[inputStream.available()];
+					inputStream.read(fileBytes);
+					String testFileContent = new String(fileBytes);
+					FileOperations testCaseFileOperations = new FileOperations(testFileContent, questionLocation,
+							String.valueOf(question.getId()), ".java");
+					testCaseFileOperations.save();
+					testCaseFileOperations.renameWithClassName();
+
+					String boilerplateSourceCode = question.getBoilerplate();
+
+					FileOperations boilerplateFileOperation = new FileOperations(boilerplateSourceCode,
+							questionLocation, String.valueOf(question.getId()), ".java");
+
+					boilerplateFileOperation.save();
+					boilerplateFileOperation.renameWithClassName();
+
+					SourceCodeParser testSourceCodeParser = new SourceCodeParser(testFileContent);
+					String testClassName = testSourceCodeParser.getClassName();
+
+					Compiler compiler = new TestCaseCompiler();
+					String testCompileMessage = compiler.compile(testClassName,
+							questionLocation + "/" + question.getId() + "/");
+
+					System.out.println(testCompileMessage);
+
+					if (testCompileMessage.length() > 0) {
+						return "redirect:/trainer/question?testCompile=" + false;
+					}
+
+					SourceCodeParser boilerplateSourceCodeParser = new SourceCodeParser(boilerplateSourceCode);
+					String boilerplateClassName = boilerplateSourceCodeParser.getClassName();
+
+					String boilerplateCompileMessage = compiler.compile(boilerplateClassName,
+							questionLocation + "/" + question.getId() + "/");
+
+					System.out.println(boilerplateCompileMessage);
+
+					if (boilerplateCompileMessage.length() > 0) {
+						return "redirect:/trainer/question?boilerplateCompile=" + false;
+					}
 				}
 				return "redirect:/question/" + question.getId();
 			}

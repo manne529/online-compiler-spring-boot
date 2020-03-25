@@ -4,21 +4,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.stereotype.Component;
-
 import project.onlinecompiler.exceptions.ClassKeyWordMissingException;
 import project.onlinecompiler.util.SourceCodeParser;
 
-@Component
 public class FileOperations {
 
 	private String fileContent;
-	private String path;
+	private String directory;
 	private String filename;
 	private String extension;
 
@@ -27,23 +23,20 @@ public class FileOperations {
 	public FileOperations() {
 	}
 
-	public FileOperations(InputStream inputStream, String path, String filename, String extension) throws IOException {
-		this.path = path;
+	public FileOperations(String fileContent, String path, String filename, String extension) throws IOException {
+		this.directory = path + "/" + filename;
 		this.filename = filename;
 		this.extension = extension;
-		byte[] fileBytes = new byte[inputStream.available()];
-		inputStream.read(fileBytes);
-		fileContent = new String(fileBytes);
-		inputStream.close();
+		this.fileContent = fileContent;
 	}
 
 	public void save() throws IOException {
 
-		File directory = new File(path);
+		File directory = new File(this.directory);
 		if (!directory.exists()) {
 			directory.mkdirs();
 		}
-		BufferedWriter writer = new BufferedWriter(new FileWriter(path + "/" + filename + extension));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(directory + "/" + filename + extension));
 		writer.write(fileContent);
 		writer.flush();
 		writer.close();
@@ -52,7 +45,7 @@ public class FileOperations {
 	public void renameWithClassName() throws IOException, ClassKeyWordMissingException {
 		sourceCodeParser = new SourceCodeParser(fileContent);
 		String className = sourceCodeParser.getClassName();
-		Path source = Paths.get(path, filename + extension);
+		Path source = Paths.get(directory, filename + extension);
 		Files.move(source, source.resolveSibling(className + extension));
 	}
 

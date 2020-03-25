@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
@@ -28,7 +27,10 @@ public class Question {
 	@Column(unique = true, nullable = false)
 	private String questionTitle;
 
+	@Column(nullable = false)
 	private String questionContent;
+
+	private String boilerplate;
 
 	@Transient
 	private MultipartFile testCasesFile;

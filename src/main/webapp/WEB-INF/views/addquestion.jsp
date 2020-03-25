@@ -32,9 +32,21 @@
 							class="form-control" />
 					</div>
 					<div class="form-group">
-						<label for="testcasefile">Add Test Cases File</label>
-						<spring:input type="file" path="testCasesFile"
-							class="form-control" />
+						<input type="checkbox" name="testcasespresent"
+							id="testcasespresent" onchange=testcaseDivToggle() /> <label
+							for="testcases">Do want Add Test Cases</label>
+					</div>
+					<div id="testcasediv">
+						<div class="form-group">
+							<label for="testcasefile">Add Test Cases File</label>
+							<spring:input type="file" path="testCasesFile"
+								class="form-control" />
+						</div>
+						<div class="form-group">
+							<label for="boilerplate">Boiler Plate</label>
+							<spring:textarea path="boilerplate" name="boilerplate" rows="20"
+								cols="90" class="form-control" />
+						</div>
 					</div>
 					<div class="d-flex justify-content-center">
 						<input type="submit" value="Add Question"
@@ -46,6 +58,6 @@
 		</section>
 	</section>
 
-
+	<script type="text/javascript" src="/resources/js/addquestion.js"></script>
 </body>
 </html>

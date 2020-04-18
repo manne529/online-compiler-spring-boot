@@ -1,0 +1,30 @@
+package com.infy.dao;
+public class EmployeeDAOImpl{
+    public String toString() {
+    	return "EmployeeDAOImpl";
+    }
+}
+
+package com.infy.service;
+public class EmployeeServiceImpl {
+	@Autowired
+	private EmployeeDAOImpl employeeDao;
+	// getter and setter methods
+}
+
+package com.infy.configuration;
+@Configuration
+public class SpringConfig{
+     @Bean
+     public EmployeeDAOImpl employeeDao() {
+        return new EmployeeDAOImpl();
+     }
+}
+package com.infy;
+public class UserInterface {
+public static void main(String[] args) {
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    EmployeeServiceImpl employeeService = (EmployeeServiceImpl)context.getBean("employeeServiceImpl"); 
+    System.out.println(employeeService.getEmployeeDao());    
+  }
+}
